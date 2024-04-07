@@ -85,6 +85,10 @@ The final result will be somewhat rough and rugged, but it's a functional mouse 
 
 The SROM needs to be captured from an existing mouse because it's copyrighted. Give it the name `srom_3360_0x03.h`, `srom_3360_0x04.h`, or `srom_3360_0x05.h`, depending on what version it is. I poked around github and found other projects using the 3360 SROM, and this seems to be the way they decided to name them their header files, so I'm copying the filename from them.
 
+Once you have the SROM, edit the `#include "srom_3360_0x05.h"` line in `3360_Mouse_pico.ino` to point to the file for your SROM.
+
+The below is instructions on how to capture the SROM from a commercial mouse.
+
 Capture the SROM from a commercial 3360 mouse with this code, and a standalone raspberry pi pico (not this mouse's custom PCB): https://gist.github.com/wareya/0dc3498bd80be93c47b6f79aa9164321
 
 Note: the above SROM capturing code requires you to use the "arduino-pico" board type in the Arduino IDE. But the firmware in this repostory requires you to use the "mbed OS" rp2040 board type.
