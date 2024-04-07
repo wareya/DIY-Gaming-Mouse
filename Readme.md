@@ -4,7 +4,7 @@ This repository contains the code, schematic, PCB layout, and 3d model for a com
 
 The firmware for this mouse uses a special debouncing algorithm that completely eliminates chatter without adding ANY latency, and eliminates bounce better than commercial mice do. Random double-clicks be gone!
 
-None of the companies that make gaming mouse sensors sell them, including Pixart, so the sensor needs to be salvaged (or bought from a scalper, or a small business that specializes in reselling them).
+None of the companies that make gaming mouse sensors sell them to consumers, including Pixart, so the sensor needs to be salvaged (or bought from a scalper, or a small business that specializes in reselling them).
 
 ![ShareX_2024-04-07_01-00-31](https://github.com/wareya/DIY-Gaming-Mouse/assets/585488/cd8786d8-98e7-4f5b-9c4c-e1c61b426e22)
 
