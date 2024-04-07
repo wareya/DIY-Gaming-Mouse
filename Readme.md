@@ -56,6 +56,7 @@ You also need:
 - access to a 3d printer that you can repeatedly print test prints on until they come out right
 - a hot air rework station with temperature and air flow rate control
 - a soldering iron with temperature control
+- hot glue device (for securing the USB cable, nothing else)
 - various small tools like screwdrivers, tweezers, cleanup blades / deburring tools, etc. for various parts of the building process
 
 ## Instructions
