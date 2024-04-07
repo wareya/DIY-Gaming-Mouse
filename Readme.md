@@ -91,6 +91,8 @@ The final result will be somewhat rough and rugged, but it's a functional mouse 
 
 ### SROM preparation
 
+Note: The SROM is optional, but highly recommended because it contains sensor firmware bugfixes. If you can't get it, comment out the call to `srom_upload();` in `pmw3360_boot()`, and then rename the `.h` file inclusion to `#include "srom_dummy_blank.h"`, but be warned that your mouse might experience glitchy behavior like "spinout" or have generally poor tracking.
+
 The SROM needs to be captured from an existing mouse because it's copyrighted. Give it the name `srom_3360_0x03.h`, `srom_3360_0x04.h`, or `srom_3360_0x05.h`, depending on what version it is. I poked around github and found other projects using the 3360 SROM, and this seems to be the way they decided to name their SROM header files, so I'm copying the filename from them.
 
 Once you have the SROM, edit the `#include "srom_3360_0x05.h"` line in `3360_Mouse_pico.ino` to point to the file for your SROM.
