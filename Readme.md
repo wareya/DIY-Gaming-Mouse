@@ -189,6 +189,9 @@ Test fit the PCB into the shell bottom, and without screwing anything into anyth
 
 Solder the scroll wheel encoder into to the RotaryEncoder footprint on the PCB. Be very sure that it's all the way down before and while soldering it. You may need to twist the pins very slightly with a pair of needle-nose pliers to get them to fit into their holes; the holes are very narrow, on purpose, to reduce the chance of solder bridges forming between them.
 
+![firefox_2024-04-07_00-51-23](https://github.com/wareya/DIY-Gaming-Mouse/assets/585488/30d91764-0442-48c3-8c1d-a2128166a1b8)
+(Example photo of a 11mm Alps-compatible encoder. 11mm is the distance between the center of the rotor and the surface of the PCB, not the top to bottom of the entire encoder.)
+
 Solder the PMW3360 sensor to the top center of the PCB, making VERY, VERY sure that it's in ALL THE WAY before and while soldering it. If it's not in all the way, the PCB may not fit properly in the shell, and/or the sensor may fail to track properly.
 
 Attach the lens to the sensor on the underside of the PCB. Then, slot the PCB into the bottom shell and make sure it fully fits all the way down.
