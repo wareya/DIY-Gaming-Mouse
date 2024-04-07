@@ -91,7 +91,7 @@ The final result will be somewhat rough and rugged, but it's a functional mouse 
 
 ### SROM preparation
 
-Note: The SROM is optional, but highly recommended because it contains sensor firmware bugfixes. If you can't get it, comment out the call to `srom_upload();` in `pmw3360_boot()`, and then rename the `.h` file inclusion to `#include "srom_dummy_blank.h"`, but be warned that your mouse might experience glitchy behavior like "spinout" or have generally poor tracking.
+Note: The SROM is optional, but highly recommended because it contains sensor firmware bugfixes. If you can't get it, comment out the call to `srom_upload();` in `pmw3360_boot()`, and then rename the `.h` file inclusion to `#include "srom_dummy_blank.h"`, but be warned that your mouse might experience glitchy behavior like "spinout" or have generally poor tracking. For example, while writing this and testing the firmware without an SROM, I click-and-dragged a title bar on a window, and then the mouse cursor teleported 300~400 pixels to the right for no reason.
 
 The SROM needs to be captured from an existing mouse because it's copyrighted. Give it the name `srom_3360_0x03.h`, `srom_3360_0x04.h`, or `srom_3360_0x05.h`, depending on what version it is. I poked around github and found other projects using the 3360 SROM, and this seems to be the way they decided to name their SROM header files, so I'm copying the filename from them.
 
