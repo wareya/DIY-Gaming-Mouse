@@ -7,6 +7,7 @@ The firmware for this mouse uses a special debouncing algorithm that completely 
 None of the companies that make gaming mouse sensors sell them, including Pixart, so the sensor needs to be salvaged (or bought from a scalper, or a small business that specializes in reselling them).
 
 ![ShareX_2024-04-07_01-00-31](https://github.com/wareya/DIY-Gaming-Mouse/assets/585488/cd8786d8-98e7-4f5b-9c4c-e1c61b426e22)
+
 (The shell has a top, too, but it's turned off in this picture so you can see the PCB.)
 
 ## Features
@@ -186,7 +187,6 @@ Make sure you have screws the right size to screw everything together. Do a test
 
 ![PPRKHyR](https://github.com/wareya/DIY-Gaming-Mouse/assets/585488/2df3f1eb-3b81-4f22-a2cc-522cd9e09db8)
 
-
 Solder the dupont-compatible header pins to the PCB, or if you have a different plan to connect the PCB to USB, do that instead. Then, connect it to your computer and make sure you can program it with the Arduino IDE. If it doesn't work, try a different copy of the PCB. Don't continue until you know that the PCB and its rp2040 processor are working properly. You should also do a test-fit of the PCB inside the 3d printed shell bottom to make sure nothing went wrong in 3d printing, and that the edge cuts and drill holes on the PCB are accurate to how they were specified in the design files.
 
 Solder each Omron switch to the board with the plungers aligned with the silkscreen illustration. Check and double check that the switches are fully flush with the board before and while you solder them; double check that they're flush after soldering the first pin.
@@ -196,6 +196,7 @@ Test fit the PCB into the shell bottom, and without screwing anything into anyth
 Solder the scroll wheel encoder into to the RotaryEncoder footprint on the PCB. Be very sure that it's all the way down before and while soldering it. You may need to twist the pins very slightly with a pair of needle-nose pliers to get them to fit into their holes; the holes are very narrow, on purpose, to reduce the chance of solder bridges forming between them.
 
 ![firefox_2024-04-07_00-51-23](https://github.com/wareya/DIY-Gaming-Mouse/assets/585488/30d91764-0442-48c3-8c1d-a2128166a1b8)
+
 (Example photo of a 11mm Alps-compatible encoder. 11mm is the distance between the center of the rotor and the surface of the PCB, not the top to bottom of the entire encoder.)
 
 Solder the PMW3360 sensor to the top center of the PCB, making VERY, VERY sure that it's in ALL THE WAY before and while soldering it. If it's not in all the way, the PCB may not fit properly in the shell, and/or the sensor may fail to track properly.
