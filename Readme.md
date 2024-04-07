@@ -7,6 +7,7 @@ None of the companies that make gaming mouse sensors sell them, including Pixart
 ## Features
 
 - True zero-latency button debouncing
+- Buttons that will not develop double-clicking problems after only a few months
 - Low-latency motion tracking (no smoothing)
 - Completely open source (Apache 2.0 license)
 - Even the hardware is open source! (except the processor and sensor)
