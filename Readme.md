@@ -91,7 +91,7 @@ Note: the above SROM capturing code requires you to use the "arduino-pico" board
 
 Use a breadboard to make a ripping setup equivalent to that depicted in the following image:
 
-https://i.imgur.com/EspAlvz.jpeg
+![EspAlvz](https://github.com/wareya/DIY-Gaming-Mouse/assets/585488/19571f49-33f4-4286-96d8-effffb80b110)
 
 Be very careful not to create any solder bridges between any of the pins on the 3360.
 
@@ -176,7 +176,8 @@ Note: The mouse feet thickness is very important, within half a millimeter! Usin
 
 Make sure you have screws the right size to screw everything together. Do a test-fit with screws if you need to. I used salvaged screws with a major diameter (outside edge of threads) of 2mm and a minor diameter of around 1.65~1.7mm and the holes on the case were designed around this, but slightly larger screws will still work.
 
-https://i.imgur.com/PPRKHyR.png
+![PPRKHyR](https://github.com/wareya/DIY-Gaming-Mouse/assets/585488/2df3f1eb-3b81-4f22-a2cc-522cd9e09db8)
+
 
 Solder the dupont-compatible header pins to the PCB, or if you have a different plan to connect the PCB to USB, do that instead. Then, connect it to your computer and make sure you can program it with the Arduino IDE. If it doesn't work, try a different copy of the PCB. Don't continue until you know that the PCB and its rp2040 processor are working properly. You should also do a test-fit of the PCB inside the 3d printed shell bottom to make sure nothing went wrong in 3d printing, and that the edge cuts and drill holes on the PCB are accurate to how they were specified in the design files.
 
