@@ -188,7 +188,7 @@ And the following additional parts for assembly:
 
 The mouse feet thickness is very important, within a quarter of a millimeter! Using any other thickness of mouse feet is likely to result in poor, glitchy tracking. The PMW3360 is VERY sensitive to VERY small changes in tracking distance.
 
-Make sure you have screws the right size to screw everything together. Do a test-fit, with screws, before doing anything else if you need to very that your screws are the right size. I used salvaged screws with a major diameter (outside edge of threads) of 2mm and a minor diameter of around 1.65~1.7mm, and the holes on the case were designed around these screws, but slightly different screws will still work.
+Make sure you have screws the right size to screw everything together. I recommend doing a test-fit of the shell and plain PCB with screws before doing anything else. The PCB is held down with two screws and the case is held together with three screws. I used salvaged screws with a major diameter (outside edge of threads) of 2mm and a minor diameter of around 1.65~1.7mm, and the holes on the case were designed around these screws, but slightly different screws will still work.
 
 ![PPRKHyR](https://github.com/wareya/DIY-Gaming-Mouse/assets/585488/2df3f1eb-3b81-4f22-a2cc-522cd9e09db8)
 
