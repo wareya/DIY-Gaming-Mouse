@@ -73,7 +73,7 @@ You need to convert the stl files to gcode yourself and run various test prints 
 
 Cura will complain about certain pieces (like the shell bottom) not being "water tight", but it's wrong; the watertightness check doesn't handle multiple overlapping solids properly. The models will still slice correctly and without glitches.
 
-The thumb pieces must be rotated into the orientation where they do not need any supports. This means the small part of the thumb piece is facing up, ans the long part of the switch clamp section is on the bottom.
+The thumb pieces must be rotated into the orientation where they do not need any supports. This means the small part of the thumb piece is facing up, and the long part of the switch clamp section is on the bottom.
 
 The scroll wheel must be rotated so that the thick cylinder part is on the bottom and the thin pin part is on the top. It must be printed with supports; any type of support is fine. It should be printed at 100% speed or lower, not higher, until it gets to the pin, at which point you MUST reduce the printing speed as low as you can tolerate. On my printer, a Sovol SV06, I had to turn it down to 25% speed. If your printer doesn't allow you to change the speed mid-print, you have to print at the low speed for the entire print. This is important; you have to print it slowly, because otherwise, the pin will be misaligned with itself and the scroll wheel will be off-balance and hit the middle mouse button switch with different pressures depending on where it is in its spin cycle.
 
@@ -198,7 +198,7 @@ Solder each Omron switch to the board with the plungers aligned with the outline
 
 Test fit the PCB into the shell bottom, and without screwing anything into anything else, attach the top half of the shell and make sure that the buttons can be clicked properly and aren't clicked just by attaching the top half of the shell. If they're hard to click or they click themselves, your 3d printer has poor tolerances, and you may need to adjust the button pieces by softening them with the hot air tool and bending them slightly until they fit just right. Once you're done here, remove the PCB from the shell.
 
-Solder the scroll wheel encoder into to the RotaryEncoder footprint on the PCB. Be very sure that it's all the way down before and while soldering it. You may need to twist the pins very slightly with a pair of needle-nose pliers to get them to fit into their holes; the holes are very narrow, on purpose, to reduce the chance of solder bridges forming between them.
+Solder the scroll wheel encoder in into the RotaryEncoder footprint on the PCB. Be very sure that it's all the way down before and while soldering it. You may need to twist the pins very slightly with a pair of needle-nose pliers to get them to fit into their holes; the holes are very narrow, on purpose, to reduce the chance of solder bridges forming between them.
 
 ![firefox_2024-04-07_00-51-23](https://github.com/wareya/DIY-Gaming-Mouse/assets/585488/30d91764-0442-48c3-8c1d-a2128166a1b8)
 
