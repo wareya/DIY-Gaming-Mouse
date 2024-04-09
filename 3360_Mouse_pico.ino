@@ -159,6 +159,9 @@ void setup()
 
 uint32_t pins_state = 0;
 uint8_t buttons = 0;
+// 8ms latch time
+uint8_t buttons_latch_max = 8;
+uint8_t buttons_latch[5] = {0, 0, 0, 0, 0};
 
 volatile uint32_t * pad_control = (uint32_t *)0x4001c000;
 volatile uint32_t * gpio_oe_set = (uint32_t *)0xd0000024;
@@ -193,17 +196,38 @@ void update_buttons()
     uint32_t pins_off = ~*gpio_in;
     
     // update pin state
+    // treat middle state (on-off matching) as no-update (use previous state)
     uint32_t pins_update = pins_on ^ pins_off;
     pins_state = (pins_state & (~pins_update)) | (pins_on & pins_update);
     
     // update button state
-    // TODO: do timed state latching
-    buttons =
+    uint8_t next_buttons =
           ((!!(pins_state & (1 << BUTTON_M1))))
         | ((!!(pins_state & (1 << BUTTON_M2))) << 1)
         | (((!!(pins_state & (1 << BUTTON_M3)) || !!(pins_state & (1 << BUTTON_DPI)))) << 2)
         | ((!!(pins_state & (1 << BUTTON_M4))) << 3)
         | ((!!(pins_state & (1 << BUTTON_M5))) << 4);
+    
+    // handle latch
+    uint8_t ok_mask = 
+          ((buttons_latch[0] == 0))
+        | ((buttons_latch[1] == 0) << 1)
+        | ((buttons_latch[2] == 0) << 2)
+        | ((buttons_latch[3] == 0) << 3)
+        | ((buttons_latch[4] == 0) << 4);
+    
+    next_buttons = (next_buttons & ok_mask) | (buttons & ~ok_mask);
+    
+    // update latch timings
+    for (int i = 0; i < 5; i++)
+    {
+        if (((next_buttons ^ buttons) >> i) & 1)
+            buttons_latch[i] = buttons_latch_max;
+        else if (buttons_latch[i])
+            buttons_latch[i] -= 1;
+    }
+    
+    buttons = next_buttons;
 }
 
 uint8_t wheel_state_a = 0;
