@@ -22,6 +22,7 @@ None of the companies that make gaming mouse sensors sell them to consumers, inc
 - Extra middle mouse button
 - - the button that normally controls DPI on other mice is mapped to M3
 - PCB exposes extra unused pins from the rp2040 as test pads for hardware/firmware modding fun; attach your own sensors! or LEDs! whatever you want!
+- Full 1000hz tracking
 
 TODO:
 

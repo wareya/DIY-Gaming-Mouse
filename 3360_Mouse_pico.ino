@@ -16,19 +16,15 @@
  */
 
 #include <SPI.h>
-
-#include "srom_3360_0x05.h"
-
 #include <mbed.h>
 
 REDIRECT_STDOUT_TO(Serial);
 
-#include "PluggableUSBHID.h"
+#include <PluggableUSBHID.h>
 
+#include "srom_3360_0x05.h"
 #include "relmouse_16.h"
 USBMouse16 mouse(false);
-
-#include <Ethernet.h>
 
 #define REG_PRODUCT_ID (0x00)
 #define REG_REVISION_ID (0x01)
@@ -110,14 +106,12 @@ USBMouse16 mouse(false);
 #define ENCODER_B 10
 #define ENCODER_COM 9
 
-
 #define PIN_NCS 17
 #define PIN_MOSI 19
 #define PIN_MISO 16
 
 SPISettings spisettings(2000000, MSBFIRST, SPI_MODE3);
 MbedSPI spi(PIN_MISO, PIN_MOSI, 18);
-
 
 void setup_buttons()
 {
@@ -136,8 +130,6 @@ void setup_buttons()
     
     digitalWrite(ENCODER_COM, LOW);
 }
-
-mbed::Ticker wheel_timer;
 
 void setup()
 {
@@ -163,64 +155,55 @@ void setup()
     pmw3360_config();
     
     setup_buttons();
-    
-    wheel_timer.attach_us(update_wheel, 250);
 }
 
-uint8_t m1_state = 0;
-uint8_t m2_state = 0;
-uint8_t m3_state = 0;
-uint8_t m4_state = 0;
-uint8_t m5_state = 0;
-uint8_t dpi_state = 0;
-
+uint32_t pins_state = 0;
 uint8_t buttons = 0;
+
+volatile uint32_t * pad_control = (uint32_t *)0x4001c000;
+volatile uint32_t * gpio_oe_set = (uint32_t *)0xd0000024;
+volatile uint32_t * gpio_oe_clr = (uint32_t *)0xd0000028;
+volatile uint32_t * gpio_in = (uint32_t *)0xd0000004;
 
 void update_buttons()
 {
-    pinMode(BUTTONS_OFF, INPUT);
-    pinMode(BUTTONS_ON, OUTPUT);
+    /*
+    // disable pullup/pulldown
+    pad_control[BUTTONS_OFF + 1] &= 0xFFFFFFF2;
+    pad_control[BUTTONS_ON + 1] &= 0xFFFFFFF2;
+    */
+    
+    // change BUTTONS_OFF to high impedance and BUTTONS_ON to output
+    // using pinMode for this is way, WAY too slow, like 50us per call (?!?!?!)
+    *gpio_oe_clr = 1 << BUTTONS_OFF;
+    *gpio_oe_set = 1 << BUTTONS_ON;
+    
+    // read ON pins
     digitalWrite(BUTTONS_ON, LOW);
+    delayMicroseconds(1);
+    uint32_t pins_on = ~*gpio_in;
     
-    uint8_t m1_on = digitalRead(BUTTON_M1);
-    uint8_t m2_on = digitalRead(BUTTON_M2);
-    uint8_t m3_on = digitalRead(BUTTON_M3);
-    uint8_t m4_on = digitalRead(BUTTON_M4);
-    uint8_t m5_on = digitalRead(BUTTON_M5);
-    uint8_t dpi_on = digitalRead(BUTTON_DPI);
+    // change BUTTONS_OFF to high impedance and BUTTONS_ON to output
+    *gpio_oe_set = 1 << BUTTONS_OFF;
+    *gpio_oe_clr = 1 << BUTTONS_ON;
     
-    pinMode(BUTTONS_ON, INPUT);
-    pinMode(BUTTONS_OFF, OUTPUT);
+    // read OFF pins
     digitalWrite(BUTTONS_OFF, LOW);
+    delayMicroseconds(1);
+    uint32_t pins_off = ~*gpio_in;
     
-    uint8_t m1_off = digitalRead(BUTTON_M1);
-    uint8_t m2_off = digitalRead(BUTTON_M2);
-    uint8_t m3_off = digitalRead(BUTTON_M3);
-    uint8_t m4_off = digitalRead(BUTTON_M4);
-    uint8_t m5_off = digitalRead(BUTTON_M5);
-    uint8_t dpi_off = digitalRead(BUTTON_DPI);
+    // update pin state
+    uint32_t pins_update = pins_on ^ pins_off;
+    pins_state = (pins_state & (~pins_update)) | (pins_on & pins_update);
     
-    pinMode(BUTTONS_OFF, INPUT);
-    
-    if (m1_on != m1_off)
-        m1_state = !m1_on;
-    if (m2_on != m2_off)
-        m2_state = !m2_on;
-    if (m3_on != m3_off)
-        m3_state = !m3_on;
-    if (m4_on != m4_off)
-        m4_state = !m4_on;
-    if (m5_on != m5_off)
-        m5_state = !m5_on;
-    if (dpi_on != dpi_off)
-        dpi_state = !dpi_on;
-    
+    // update button state
+    // TODO: do timed state latching
     buttons =
-        m1_state |
-        (m2_state << 1) |
-        ((m3_state | dpi_state) << 2) |
-        (m4_state << 3) |
-        (m5_state << 4);
+          ((!!(pins_state & (1 << BUTTON_M1))))
+        | ((!!(pins_state & (1 << BUTTON_M2))) << 1)
+        | (((!!(pins_state & (1 << BUTTON_M3)) || !!(pins_state & (1 << BUTTON_DPI)))) << 2)
+        | ((!!(pins_state & (1 << BUTTON_M4))) << 3)
+        | ((!!(pins_state & (1 << BUTTON_M5))) << 4);
 }
 
 uint8_t wheel_state_a = 0;
@@ -228,28 +211,10 @@ uint8_t wheel_state_b = 0;
 uint8_t wheel_state_output = 0;
 int8_t wheel_progress = 0;
 
-int8_t wheel_temp_a[10];
-int8_t wheel_temp_b[10];
-int wheel_temp_tm[10];
-int8_t wheel_temp_i = 0;
-
 void update_wheel()
 {
-    // filter by gathering 3 samples
-    
     uint8_t wheel_new_a = digitalRead(ENCODER_A);
     uint8_t wheel_new_b = digitalRead(ENCODER_B);
-    
-    delayMicroseconds(5);
-    wheel_new_a += digitalRead(ENCODER_A);
-    wheel_new_b += digitalRead(ENCODER_B);
-    
-    delayMicroseconds(5);
-    wheel_new_a += digitalRead(ENCODER_A);
-    wheel_new_b += digitalRead(ENCODER_B);
-    
-    wheel_new_a = (wheel_new_a + 1) / 3;
-    wheel_new_b = (wheel_new_b + 1) / 3;
     
     if (wheel_new_a != wheel_state_a || wheel_new_b != wheel_state_b)
     {
@@ -265,14 +230,6 @@ void update_wheel()
             
             wheel_state_output = wheel_new_a;
         }
-        
-        wheel_temp_a[wheel_temp_i] = wheel_new_a;
-        wheel_temp_b[wheel_temp_i] = wheel_new_b;
-        wheel_temp_tm[wheel_temp_i] = (int) millis();
-        
-        wheel_temp_i += 1;
-        if (wheel_temp_i >= 10)
-            wheel_temp_i = 9;
         
         wheel_state_a = wheel_new_a;
         wheel_state_b = wheel_new_b;
@@ -294,86 +251,39 @@ struct MotionBurstData {
     uint16_t shutter;
 };
 
-// prevent Arduino IDE's evil function declaration hoisting by explicitly declaring separately from defining
-MotionBurstData spi_read_motion_burst();
+MotionBurstData spi_read_motion_burst(bool do_update_wheel);
 
 void loop()
 {
-    update_buttons();
-    
-    /*
-    spi_write(REG_MOTION, 1);
-    byte motion = spi_read(REG_MOTION);
+    // these execute nearly instantly
+    // we want to call update_wheel roughly every 250ms to avoid skipping
+    update_wheel();
+    delayMicroseconds(250);
+    update_wheel();
     
     int16_t x = 0;
     int16_t y = 0;
-    if (motion & 0x80)
-    {
-        uint16_t x_lo = spi_read(REG_DELTA_X_L);
-        uint16_t x_hi = spi_read(REG_DELTA_X_H);
-        uint16_t y_lo = spi_read(REG_DELTA_Y_L);
-        uint16_t y_hi = spi_read(REG_DELTA_Y_H);
-        //printf("x hi, lo: %02X, %02X\n", x_hi, x_lo);
-        x = (x_hi << 8) | x_lo;
-        y = (y_hi << 8) | y_lo;
-    }
     
-    n += 1;
-    if (n > 1000)
-    {
-        n = 0;
-        uint8_t squal = spi_read(REG_SQUAL);
-        printf("surface quality: %d\n", squal);
-    }
-    */
-    int16_t x = 0;
-    int16_t y = 0;
-    MotionBurstData data = spi_read_motion_burst();
+    // takes ~400us to execute; wheel is updated again around 250ms into the call
+    MotionBurstData data = spi_read_motion_burst(true);
     if (data.motion)
     {
         x = data.x;
         y = data.y;
     }
-    /*
-    n += 1;
-    if (n > 1000)
-    {
-        n = 0;
-        printf("surface quality: %d\n", data.squal);
-    }
-    */
     
-    noInterrupts();
+    update_wheel();
+    update_buttons();
+    
     int8_t wheel = wheel_progress;
     wheel_progress = 0;
     
-    int8_t wheel_temp_a_local[10];
-    int8_t wheel_temp_b_local[10];
-    int wheel_temp_tm_local[10];
-    int8_t wheel_temp_i_local = wheel_temp_i;
-    
-    for (int i = 0; i < wheel_temp_i; i++)
-    {
-        wheel_temp_a_local[i] = wheel_temp_a[i];
-        wheel_temp_b_local[i] = wheel_temp_b[i];
-        wheel_temp_tm_local[i] = wheel_temp_tm[i];
-    }
-    wheel_temp_i = 0;
-    
-    interrupts();
-    
-    if (wheel_temp_i_local)
-        printf("---\n");
-    for (int i = 0; i < wheel_temp_i_local; i++)
-        printf("%c %c %d\n", wheel_temp_a_local[i] ? '#' : '.', wheel_temp_b_local[i] ? '#' : '.', wheel_temp_tm_local[i]);
-    
-    uint32_t b = micros();
-    
+    //uint32_t a = micros();
+    // this will return around 1ms after the last time it returned
+    // which should be around 250us from now
     mouse.update(x, y, buttons, wheel);
-    //mouse.move(x, y);
-    
-    uint32_t c = micros();
-    //printf("%d\n", c - b);
+    //uint32_t b = micros();
+    //Serial.println(b - a);
 }
 
 void pmw3360_boot()
@@ -449,11 +359,14 @@ byte spi_read(byte addr)
     return ret;
 }
 
-MotionBurstData spi_read_motion_burst()
+MotionBurstData spi_read_motion_burst(bool do_update_wheel)
 {
     MotionBurstData ret = {0};
     
+    // this takes around 260ms to execute; update scroll wheel again after calling it
     spi_write(REG_MOTION_BURST, 0x00);
+    if (do_update_wheel)
+        update_wheel();
     
     spi_begin();
     
@@ -472,6 +385,9 @@ MotionBurstData spi_read_motion_burst()
     ret.y |= ((uint16_t)SPI.transfer(0)) << 8;
     ret.squal = SPI.transfer(0);
     // don't care about the rest; terminate
+    digitalWrite(PIN_NCS, HIGH);
+    delayMicroseconds(1); // t_BEXIT = 500ns; wait 1000ns (1us)
+    
     /*
     ret.raw_sum = SPI.transfer(0);
     ret.raw_max = SPI.transfer(0);
@@ -481,8 +397,6 @@ MotionBurstData spi_read_motion_burst()
     */
     
     spi_end();
-    
-    delayMicroseconds(1); // t_BEXIT = 500ns; wait 1000ns (1us)
     
     return ret;
 }
