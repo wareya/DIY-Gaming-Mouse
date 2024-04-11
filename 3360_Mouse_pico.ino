@@ -131,6 +131,7 @@ void setup_buttons()
     digitalWrite(ENCODER_COM, LOW);
 }
 
+bool mouse_inited;
 void setup()
 {
     Serial1.begin(1000000);
@@ -290,7 +291,7 @@ void loop()
     
     // takes ~400us to execute; wheel is updated again around 250ms into the call
     MotionBurstData data = spi_read_motion_burst(true);
-    if (data.motion)
+    if (mouse_inited && data.motion)
     {
         x = data.x;
         y = data.y;
@@ -455,6 +456,7 @@ void srom_upload()
     delayMicroseconds(200);
     
     byte id = spi_read(REG_SROM_ID);
+    mouse_inited = (id != 0xFF);
     printf("\n");
     printf("srom id: ");
     printf("%d", id);
