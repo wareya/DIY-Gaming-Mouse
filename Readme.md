@@ -204,7 +204,7 @@ Solder the scroll wheel encoder in into the RotaryEncoder footprint on the PCB. 
 
 (Example photo of a 11mm Alps-compatible encoder. 11mm is the distance between the center of the rotor and the surface of the PCB, not the top to bottom of the entire encoder.)
 
-Solder the PMW3360 sensor to the center of the PCB, making VERY, VERY sure that it's in ALL THE WAY before and while soldering it. If it's not in all the way, the PCB may not fit properly in the shell, and/or the sensor may fail to track properly.
+Solder the PMW3360 sensor to the center of the PCB, making VERY, VERY sure that it's in ALL THE WAY before and while soldering it. If it's not in all the way, the PCB may not fit properly in the shell, and/or the sensor may fail to track properly. The sensor must be mounted "upside-down" relative to the rest of the board, such that the text on it is upside-down compared to the text at the top of the board. If you put the sensor in the wrong way, it will look uncentered; if you put it in the right way (upside-down), it will look centered. If you get the wrong, the sensor might fry itself when you turn the mouse on, and the lens might not even fit against the sensor through the PCB.
 
 Attach the lens to the sensor on the underside of the PCB. Then, slot the PCB into the bottom shell and make sure it fully fits all the way down.
 
