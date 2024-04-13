@@ -190,7 +190,7 @@ And the following additional parts for assembly:
 
 The mouse feet thickness is very important, within a quarter of a millimeter! Using any other thickness of mouse feet is likely to result in poor, glitchy tracking. The PMW3360 is VERY sensitive to VERY small changes in tracking distance.
 
-Make sure you have screws the right size to screw everything together. I recommend doing a test-fit of the shell and plain PCB with screws before doing anything else. The PCB is held down with two screws and the case is held together with three screws. I used salvaged screws with a major diameter (outside edge of threads) of 2mm and a minor diameter of around 1.65~1.7mm, and the holes on the case were designed around these screws, but slightly different screws will still work.
+Make sure you have screws the right size to screw everything together. I recommend doing a test-fit of the shell and plain PCB with screws before doing anything else. Be careful not to overtighten the side screws; doing so can cause their mounting holes to split. The PCB is held down with two screws and the case is held together with three screws. I used salvaged screws with a major diameter (outside edge of threads) of 2mm and a minor diameter of around 1.65~1.7mm, and the holes on the case were designed around these screws, but slightly different screws will still work.
 
 ![PPRKHyR](https://github.com/wareya/DIY-Gaming-Mouse/assets/585488/2df3f1eb-3b81-4f22-a2cc-522cd9e09db8)
 
@@ -220,7 +220,7 @@ Fit scroll wheel brace around the middle mouse button (near the right mouse butt
 
 Put the PCB back into the shell bottom and make sure it's still snug. Route the USB cable behind the support post in the back of the case (it has a screw hole in it) and around the right side of the PCB (NOT the left side), hugging the right side of the right mouse button, and then feed it out through the slot in the front. Use hot glue to secure the USB cable to that front slot. Make sure that it points relatively straight out the front when you hot glue it down.
 
-Plug it in, compile and upload the firmware from the Arduino IDE, and make sure everything works. If it does, you're done!
+Plug it in, compile and upload the firmware from the Arduino IDE, and make sure everything works. If it does, you're done! Just re-screw everything together. Be careful not to overtighten the side screws; doing so can cause their mounting holes to split.
 
 ## License
 
