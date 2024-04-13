@@ -1,6 +1,6 @@
 # DIY Gaming Mouse
 
-https://www.youtube.com/watch?v=h-Cdl4Vq9H4
+Video about why and how I made this, and what the various iterations were like: https://www.youtube.com/watch?v=h-Cdl4Vq9H4
 
 This repository contains the code, schematic, PCB layout, and 3d model for a completely DIY gaming mouse, all designed around a Pixart PMW3360 sensor.
 
