@@ -1,5 +1,7 @@
 # DIY Gaming Mouse
 
+https://www.youtube.com/watch?v=h-Cdl4Vq9H4
+
 This repository contains the code, schematic, PCB layout, and 3d model for a completely DIY gaming mouse, all designed around a Pixart PMW3360 sensor.
 
 The firmware for this mouse uses a special debouncing algorithm that completely eliminates chatter without adding ANY latency, and eliminates bounce better than commercial mice do. Random double-clicks be gone!
