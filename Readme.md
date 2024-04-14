@@ -216,7 +216,7 @@ Remove the PCB and fit the side button thumb pieces to their switches. This is d
 
 ![firefox_2024-04-08_01-20-12](https://github.com/wareya/DIY-Gaming-Mouse/assets/585488/a08bd5af-7435-46e2-8b38-3d783ea6fb01) ![firefox_2024-04-08_01-20-14](https://github.com/wareya/DIY-Gaming-Mouse/assets/585488/86bda439-689d-4ce7-8297-1052b1211e62) ![firefox_2024-04-08_01-20-17](https://github.com/wareya/DIY-Gaming-Mouse/assets/585488/78926e60-1c9f-456a-991d-6e4c54f80c34) ![firefox_2024-04-08_01-20-19](https://github.com/wareya/DIY-Gaming-Mouse/assets/585488/ea0520ec-fe53-4e1a-b1d2-67a40bf0a244)
 
-Above is a visual image series depicting the process for mounting the thumb button pieces.
+Above is a visual image series depicting the process for mounting the thumb button pieces. It's OK if they crack or break while attempting to fit them; they will still fit and work, just be slightly less snug than they're supposed to be.
 
 Fit scroll wheel brace around the middle mouse button (near the right mouse button), with the spikes towards the "inside" of the mouse and away from the middle mouse button. Now fit the scroll wheel and make sure it's snug and properly balanced. If it's not, you'll need to reprint it.
 
