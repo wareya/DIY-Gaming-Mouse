@@ -29,7 +29,7 @@ None of the companies that make gaming mouse sensors sell them to consumers, inc
 TODO:
 
 - Configurable DPI (currently hardcoded at 1200)
-- - To change it in the firmware code, edit the `spi_write(REG_CONFIG1, 11); // 1200 dpi` line, replacing 11 with your dpi divided by 100 minus 1, e.g. 7 for 800 dpi, 3 for 400, 14 for 1600, etc
+- - To change it in the firmware code, edit the `spi_write(REG_CONFIG1, 11); // 1200 dpi` line, replacing 11 with your dpi divided by 100 minus 1, e.g. 7 for 800 dpi, 3 for 400, 15 for 1600, etc
 - "fun" optional features like WMO-style diagonal jaggy removal or optional in-firmware acceleration, anti-acceleration (prediction), angle snapping, cinematic smoothing, etc
 
 ## Required skills
