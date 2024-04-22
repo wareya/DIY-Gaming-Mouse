@@ -8,7 +8,24 @@ The firmware for this mouse uses a special debouncing algorithm that completely 
 
 None of the companies that make gaming mouse sensors sell them to consumers, including Pixart, so the sensor needs to be salvaged (or bought from a scalper, or a small business that specializes in reselling them).
 
-![ShareX_2024-04-07_01-00-31](https://github.com/wareya/DIY-Gaming-Mouse/assets/585488/cd8786d8-98e7-4f5b-9c4c-e1c61b426e22)
+<table>
+  <tr>
+    <td>
+      <img src="https://github.com/wareya/DIY-Gaming-Mouse/assets/585488/b0d7f284-dda6-4e33-833e-19e7270b6a2f">
+    </td>
+    <td>
+      <img src="https://github.com/wareya/DIY-Gaming-Mouse/assets/585488/ba9f6bce-50b7-4b4e-8d83-0501b01e5e16">
+    </td>
+  </tr>
+  <tr>
+    <td>
+      opened mouse
+    </td>
+    <td>
+      assembled mouse
+    </td>
+  </tr>
+</table>
 
 (The shell has a top, too, but it's turned off in this picture so you can see the PCB.)
 
