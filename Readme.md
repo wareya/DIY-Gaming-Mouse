@@ -100,7 +100,7 @@ The scroll wheel must be rotated so that the thick cylinder part is on the botto
 
 Print the scroll wheel brace as-is.
 
-Print the shell bottom as-is.
+Print the shell bottom as-is. However, if you have a heated printbed or chamber, you need to wait for it to completely cool before removing it. If you remove the print while it's warm, the bottom will bend and the mouse won't sit flat. Even with mouse feet, the sensor will be at the wrong height if the bottom is bent.
 
 Print the shell top with tree supports and a support cutoff angle between 60 and 70 degrees. Do not use "standard"/traditional/grid supports; they will be too difficult to remove, and you will probably damage the print trying to remove them. On my printer, a Sovol SV06, 67 degrees was just right. If you have poor print quality, you might need to reduce the cutoff angle down to something silly like 50 degrees. If you have to go below 50 degrees, get a better printer, or make sure you're using the right filament at the right temperature, etc.
 
