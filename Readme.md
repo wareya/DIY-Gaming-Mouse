@@ -189,6 +189,8 @@ Now, use a soldering iron to clean any excess remaining solder off of the pins. 
 
 Build gerber files and drill files and all the other necessary files (BOM, pick and place, etc) that your PCB manufacturer needs to print **and assemble** the PCB. Some of the components on the PCB are very, very delicate, so unless you're a genuine expert, trying to hand-solder them is doomed.
 
+The plugin I use to manage JLCPCB part mappings is https://github.com/Bouni/kicad-jlcpcb-tools - this is the plugin that uses the `project.db` file. However, this file is just an sqlite database, so if you want to make sure you use the right parts with another manufacturer, you can open it up with any sqlite database viewer and get the LCSC part numbers and look them up individually, then find the equivalent part for your PCBA manufacturer. However, the PCB isn't designed to require you to do this; you can look up the parts individually instead (based on their values).
+
 Once you have your PCBs, you need the following parts to manually solder to the board:
 
 - 6 Omron D2F-01F switches (or compatible, e.g. D2FC)
