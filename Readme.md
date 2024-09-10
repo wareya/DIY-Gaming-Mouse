@@ -128,6 +128,8 @@ Use a breadboard to make a ripping setup equivalent to that depicted in the foll
 
 ![EspAlvz](https://github.com/wareya/DIY-Gaming-Mouse/assets/585488/19571f49-33f4-4286-96d8-effffb80b110)
 
+And this post: https://github.com/wareya/DIY-Gaming-Mouse/issues/6#issuecomment-2340009477
+
 Be very careful not to create any solder bridges between any of the pins on the 3360.
 
 Reconnect the mouse so that it reboots and sends the SROM to the sensor again.
