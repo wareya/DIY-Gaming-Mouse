@@ -160,6 +160,7 @@ void setup()
 
 uint32_t pins_state = 0;
 uint8_t buttons = 0;
+uint8_t which_m3 = 0;
 // 8ms latch time
 uint8_t buttons_latch_max = 8;
 uint8_t buttons_latch[5] = {0, 0, 0, 0, 0};
@@ -205,9 +206,10 @@ void update_buttons()
     uint8_t next_buttons =
           ((!!(pins_state & (1 << BUTTON_M1))))
         | ((!!(pins_state & (1 << BUTTON_M2))) << 1)
-        | (((!!(pins_state & (1 << BUTTON_M3)) || !!(pins_state & (1 << BUTTON_DPI)))) << 2)
-        | ((!!(pins_state & (1 << BUTTON_M4))) << 3)
-        | ((!!(pins_state & (1 << BUTTON_M5))) << 4);
+        | ((!!(pins_state & (1 << BUTTON_M3))) << 2)
+        | ((!!(pins_state & (1 << BUTTON_DPI))) << 3)
+        | ((!!(pins_state & (1 << BUTTON_M4))) << 4)
+        | ((!!(pins_state & (1 << BUTTON_M5))) << 5);
     
     // handle latch
     uint8_t ok_mask = 
@@ -215,18 +217,26 @@ void update_buttons()
         | ((buttons_latch[1] == 0) << 1)
         | ((buttons_latch[2] == 0) << 2)
         | ((buttons_latch[3] == 0) << 3)
-        | ((buttons_latch[4] == 0) << 4);
+        | ((buttons_latch[4] == 0) << 4)
+        | ((buttons_latch[5] == 0) << 5);
+    
+    //printf("%u, %u, %u, %u\n", ~pins_on, ~pins_off, pins_state, ok_mask);
     
     next_buttons = (next_buttons & ok_mask) | (buttons & ~ok_mask);
     
     // update latch timings
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < 6; i++)
     {
         if (((next_buttons ^ buttons) >> i) & 1)
             buttons_latch[i] = buttons_latch_max;
         else if (buttons_latch[i])
             buttons_latch[i] -= 1;
     }
+    
+    if ((next_buttons & (1 << 2)) != (buttons & (1 << 2)))
+        which_m3 = 0;
+    if ((next_buttons & (1 << 3)) != (buttons & (1 << 3)))
+        which_m3 = 1;
     
     buttons = next_buttons;
 }
@@ -278,6 +288,37 @@ struct MotionBurstData {
 
 MotionBurstData spi_read_motion_burst(bool do_update_wheel);
 
+int dpi = 12; // in hundreds; 1200 dpi
+int lod = 2;
+
+void check_config_inputs()
+{
+    if ((buttons & 1) &&
+        (buttons & 2) &&
+        (buttons & 8) &&
+        (buttons & 16))
+    {
+        int olddpi = dpi;
+        if (wheel_progress < 0)
+            dpi += dpi <  16 ? 1 : dpi <  32 ? 2 : dpi <  64 ? 4 : 8;
+        else if (wheel_progress > 0)
+            dpi -= dpi <= 16 ? 1 : dpi <= 32 ? 2 : dpi <= 64 ? 4 : 8;
+        if (dpi > 120)
+            dpi = 120;
+        else if (dpi < 1)
+            dpi = 1;
+        
+        if (olddpi != dpi)
+        {
+            spi_write(REG_CONFIG1, dpi - 1);
+            
+            printf("new DPI: %d\n", dpi * 100);
+        }
+        
+        wheel_progress = 0;
+    }
+}
+
 void loop()
 {
     // these execute nearly instantly
@@ -298,7 +339,12 @@ void loop()
     }
     
     update_wheel();
+    //uint32_t a = micros();
     update_buttons();
+    //uint32_t b = micros();
+    //Serial.println(b - a);
+    
+    check_config_inputs();
     
     int8_t wheel = wheel_progress;
     wheel_progress = 0;
@@ -306,7 +352,12 @@ void loop()
     //uint32_t a = micros();
     // this will return around 1ms after the last time it returned
     // which should be around 250us from now
-    mouse.update(x, y, buttons, wheel);
+    uint8_t new_buttons = buttons;
+    if (which_m3)
+        new_buttons = (new_buttons & 3) | ((new_buttons >> 1) & ~3);
+    else
+        new_buttons = (new_buttons & 7) | ((new_buttons >> 1) & ~7);
+    mouse.update(x, y, new_buttons, wheel);
     //uint32_t b = micros();
     //Serial.println(b - a);
 }
@@ -327,11 +378,7 @@ void pmw3360_boot()
 
 void pmw3360_config()
 {
-    spi_write(REG_CONFIG1, 11); // 1200 dpi
-    
-    // 3mm liftoff (2mm is bad for 3d printed case tolerances)
-    // FIXME: make configurable
-    //spi_write(REG_LIFT_CONFIG, 3);
+    spi_write(REG_CONFIG1, dpi - 1);
 }
 
 void spi_begin()
@@ -388,7 +435,7 @@ MotionBurstData spi_read_motion_burst(bool do_update_wheel)
 {
     MotionBurstData ret = {0};
     
-    // this takes around 260ms to execute; update scroll wheel again after calling it
+    // this takes around 260us to execute; update scroll wheel again after calling it
     spi_write(REG_MOTION_BURST, 0x00);
     if (do_update_wheel)
         update_wheel();
