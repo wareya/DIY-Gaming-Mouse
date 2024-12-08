@@ -50,6 +50,7 @@ TODO:
 - rebinding, macros, etc
 - - can already be hardcoded atm if you're skilled at programming
 - "fun" optional features like WMO-style diagonal jaggy removal or optional in-firmware acceleration, anti-smoothing (prediction), angle snapping, cinematic smoothing, etc
+- [Wireless](https://github.com/wareya/DIY-Gaming-Mouse/issues/8)
 
 ## Required skills
 
